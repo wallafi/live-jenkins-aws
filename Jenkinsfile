@@ -5,7 +5,6 @@ pipeline {
         stage ('Build Image') {
             steps {
                 script {
-                   /* dockerapp = docker.build("wallafi/web-live-app:${env.BUILD_ID}", "-f ./src/Dockerfile ./src") */
                     dockerapp = docker.build("web-live-app:${env.BUILD_ID}", "-f ./src/Dockerfile ./src")
                 }
             }
@@ -14,9 +13,7 @@ pipeline {
         stage ('Push Image') {
             steps {
                 script {
-                    /*docker.withRegistry('https://registry.hub.docker.com', 'dockerhub')*/ 
-                    withAWS(credentials: 'aws', region: 'us-east-1') {
-                    docker.withRegistry('https://931783206580.dkr.ecr.us-east-1.amazonaws.com', 'ecr:us-east-1:aws-credentials') 
+                    docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
                         dockerapp.push('latest')
                         dockerapp.push("${env.BUILD_ID}")
                     }
