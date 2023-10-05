@@ -15,7 +15,8 @@ pipeline {
             steps {
                 script {
                     /*docker.withRegistry('https://registry.hub.docker.com', 'dockerhub')*/ 
-                    docker.withRegistry('https://931783206580.dkr.ecr.us-east-1.amazonaws.com', 'aws') {
+                    withAWS(credentials: 'aws', region: 'us-east-1') {
+                    docker.withRegistry('https://931783206580.dkr.ecr.us-east-1.amazonaws.com', 'ecr:us-east-1:aws-credentials') 
                         dockerapp.push('latest')
                         dockerapp.push("${env.BUILD_ID}")
                     }
