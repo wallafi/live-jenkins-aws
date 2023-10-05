@@ -27,7 +27,7 @@ pipeline {
             }
             steps {
                 withAWS(credentials: 'aws', region: 'us-east-1') {
-                    sh 'aws eks update-kubeconfig --name LIVE-EKS'
+                    sh 'aws eks update-kubeconfig --name live-eks'
                     sh 'sed -i "s/{{tag}}/$tag_version/g" ./k8s/deployment.yaml'
                     sh 'kubectl apply -f ./k8s/deployment.yaml'
                 }
